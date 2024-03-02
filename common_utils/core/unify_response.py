@@ -1,7 +1,8 @@
-from utils.i18n_util import t
 from typing import Generic, List, Optional, TypeVar, Union
 
-from const.message import ELanguage
+from ..const.message import ELanguage
+
+from ..utils.i18n_util import t
 
 T = TypeVar("T")
 

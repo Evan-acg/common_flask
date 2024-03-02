@@ -3,7 +3,7 @@ from typing import List
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import orm
 
-from utils.string_util import to_lower_camel_case
+from ..utils.string_util import to_lower_camel_case
 
 
 db: SQLAlchemy = SQLAlchemy()

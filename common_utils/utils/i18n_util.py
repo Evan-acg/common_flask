@@ -1,5 +1,5 @@
 import i18n
-from i18n import t
+from ..i18n import t
 from os.path import join, dirname, abspath
 
 i18n.set("file_format", "yaml")

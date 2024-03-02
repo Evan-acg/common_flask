@@ -1,7 +1,6 @@
-from enum import Enum
 import json
+from enum import Enum
 from typing import Dict
-
 
 HTML_SLOGAN: str = """
 <style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: 
