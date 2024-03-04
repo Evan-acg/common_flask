@@ -1,4 +1,4 @@
-from .core.mapper import Entity
+from .core.mapper import Entity, db
 from .core.scaffold import Flask
 from .core.unify_exception import (
     BadRequest,
@@ -17,6 +17,7 @@ from .utils.config_util import flask_config_register
 from .utils.logger_util import logger_register
 
 __all__ = [
+    "db",
     "Flask",
     "Entity",
     "IResult",

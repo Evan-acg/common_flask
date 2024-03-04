@@ -10,16 +10,26 @@ from flask import Response, request
 from flask.json.provider import DefaultJSONProvider
 
 from common_utils.core.unify_exception import IException
-from common_utils.core.unify_response import R, IResult
+from common_utils.core.unify_response import IResult, R
 from common_utils.types.flask_type import IFlaskResponseRV
-
 
 logger: logging.Logger = logging.getLogger("Flask")
 
 
 class JSONProvider(DefaultJSONProvider):
+    """A custom JSON provider that extends the DefaultJSONProvider class."""
+
     def dumps(self, o: Any, **kwargs: Any) -> str:
-        print(o)
+        """
+        Serialize an object to a JSON formatted string.
+
+        Args:
+            o (Any): The object to be serialized.
+            **kwargs (Any): Additional keyword arguments to be passed to the json.dumps() function.
+
+        Returns:
+            str: The JSON formatted string representation of the object.
+        """
         if hasattr(o, "keys") and hasattr(o, "__getitem__"):
             o = dict(o)
 
@@ -36,6 +46,21 @@ class JSONProvider(DefaultJSONProvider):
 
 
 class Flask(_Flask):
+    """
+    Customized Flask class with additional error handlers and response handling.
+
+    Inherits from the _Flask class and adds error handlers for 404, 405, and 500 errors.
+    It also provides a custom implementation of the `make_response` method.
+
+    Attributes:
+        json_provider_class (class): The JSONProvider class used for JSON serialization.
+
+    Methods:
+        __init__: Initializes the Flask object and sets up the error handlers.
+        make_response: Overrides the default `make_response` method to handle custom response objects.
+
+    """
+
     json_provider_class = JSONProvider
 
     def __init__(self, *args, **kwargs):
@@ -61,6 +86,20 @@ class Flask(_Flask):
             return R.error(message=str(e))
 
     def make_response(self, rv: IFlaskResponseRV) -> Response:
+        """
+        Custom implementation of the `make_response` method.
+
+        This method is responsible for creating a Flask response object based on the provided return value (rv).
+        If the return value is an instance of IResult, it is used as is.
+        Otherwise, a default success response object is created and the return value is set as the data attribute.
+
+        Args:
+            rv (IFlaskResponseRV): The return value to be converted into a Flask response.
+
+        Returns:
+            Response: The Flask response object.
+
+        """
         if isinstance(rv, IResult):
             ret = rv
         else:
