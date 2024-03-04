@@ -1,3 +1,4 @@
+from http import HTTPMethod
 from typing import Generic, List, Optional, TypeVar, Union
 
 from ..const.message import ELanguage
@@ -20,6 +21,8 @@ class IResult(Generic[T]):
         self.code: int = code
         self.message: str = message
         self.data: Optional[T] = data
+        self.method: HTTPMethod = "GET"
+        self.path: str = "/"
 
     def __str__(self) -> str:
         """
@@ -53,7 +56,7 @@ class IResult(Generic[T]):
         return getattr(self, item, None)
 
     def keys(self) -> List[str]:
-        members: List[str] = ["code", "message", "data"]
+        members: List[str] = ["code", "message", "data", "path", "method"]
         return list(filter(lambda x: hasattr(self, x), members))
 
 
@@ -132,6 +135,28 @@ class R:
 
         Returns:
             IResult: The failure response object.
+        """
+
+        if message is None:
+            message = t(f"message.{code}", default=R._default_message)
+        return IResult(code=code, message=message, data=data)
+
+    @staticmethod
+    def error(
+        code: int = 50000,
+        message: str = None,
+        data: Optional[T] = None,
+    ) -> IResult:
+        """
+        Create an error response.
+
+        Args:
+            code (int): The error code.
+            message (str, optional): The error message. If not provided, a default message will be used.
+            data (Optional[T], optional): Additional data to include in the response.
+
+        Returns:
+            IResult: An instance of the IResult class representing the error response.
         """
 
         if message is None:
