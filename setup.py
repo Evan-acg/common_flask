@@ -2,7 +2,7 @@ from importlib.machinery import SourceFileLoader
 from setuptools import setup, find_packages
 
 version_module = SourceFileLoader(
-    "version", "common_flask_utils/version.py"
+    "version", "common_utils/version.py"
 ).load_module("version")
 
 __version__ = version_module.__version__
