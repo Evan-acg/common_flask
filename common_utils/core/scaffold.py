@@ -72,8 +72,8 @@ class Flask(_Flask):
         controller_scan_dir: str = kwargs.pop("controller_scan_dir", None)
         super().__init__(*args, **kwargs)
 
-        logger_registration()
         flask_config_registration(self)
+        logger_registration()
 
         if controller_scan_dir is not None:
             blueprint_registration(self, controller_scan_dir)
