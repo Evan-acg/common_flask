@@ -6,7 +6,7 @@ from common_utils.core.unify_exception import (
     InternalServerError,
     MethodNotAllowed,
     NotFound,
-    TokenInvalidOrExpired,
+    TokenExpired,
     Unauthorized,
 )
 
@@ -49,14 +49,12 @@ def test_forbidden():
 
 def test_token_invalid_or_expired():
     # Test default values
-    exception = TokenInvalidOrExpired()
-    assert exception.code == 40302
-    assert exception.message == "Token 无效或已过期"
+    exception = TokenExpired()
+    assert exception.code == 40303
+    assert exception.message == "Token Expired"
 
     # Test custom values
-    exception = TokenInvalidOrExpired(
-        code=40303, message="Custom Token Invalid Or Expired"
-    )
+    exception = TokenExpired(code=40303, message="Custom Token Invalid Or Expired")
     assert exception.code == 40303
     assert exception.message == "Custom Token Invalid Or Expired"
 

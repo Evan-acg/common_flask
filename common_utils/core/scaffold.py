@@ -8,10 +8,15 @@ from typing import Any
 from flask import Flask as _Flask
 from flask import Response, request
 from flask.json.provider import DefaultJSONProvider
+from flask_cors import CORS
 
-from common_utils.core.unify_exception import IException
-from common_utils.core.unify_response import IResult, R
-from common_utils.types.flask_type import IFlaskResponseRV
+from ..types.flask_type import IFlaskResponseRV
+from ..utils.blueprint_util import blueprint_registration
+from ..utils.config_util import flask_config_registration
+from ..utils.logger_util import logger_registration
+from .mapper import db
+from .unify_exception import IException
+from .unify_response import IResult, R
 
 logger: logging.Logger = logging.getLogger("Flask")
 
@@ -64,8 +69,29 @@ class Flask(_Flask):
     json_provider_class = JSONProvider
 
     def __init__(self, *args, **kwargs):
+        controller_scan_dir: str = kwargs.pop("controller_scan_dir", None)
         super().__init__(*args, **kwargs)
 
+        logger_registration()
+        flask_config_registration(self)
+
+        if controller_scan_dir is not None:
+            blueprint_registration(self, controller_scan_dir)
+
+        self.default_error_handlers_registration()
+        self.urls_route_registration()
+        CORS(self)
+        db.init_app(self)
+
+    def urls_route_registration(self):
+        if not self.config.get("DEBUG"):
+            return
+
+        @self.get("/urls")
+        def urls():
+            return [rule.rule for rule in self.url_map.iter_rules()]
+
+    def default_error_handlers_registration(self):
         @self.errorhandler(404)
         def not_found(e):
             return R.fail(code=40400)

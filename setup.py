@@ -20,7 +20,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=["Flask", "Flask-SQLAlchemy", "python-i18n"],
+    install_requires=["Flask", "Flask-SQLAlchemy", "python-i18n", "jwt"],
     include_package_data=True,
     python_requires=">=3.10",
 )

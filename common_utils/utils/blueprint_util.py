@@ -19,29 +19,29 @@ class Outlining:
     head: Callable[[str, Any], Callable[[T_route], T_route]]
 
     def __init__(
-            self,
-            name: str,
-            *args: List[Any],
-            url_prefix: str = None,
-            **kwargs: Dict[str, Any],
-        ) -> None:
-            """
-            Initialize a BlueprintUtil object.
+        self,
+        name: str,
+        *args: List[Any],
+        url_prefix: str = None,
+        **kwargs: Dict[str, Any],
+    ) -> None:
+        """
+        Initialize a BlueprintUtil object.
 
-            Args:
-                name (str): The name of the blueprint.
-                *args (List[Any]): Variable length argument list.
-                url_prefix (str, optional): The URL prefix for the blueprint. Defaults to None.
-                **kwargs (Dict[str, Any]): Keyword arguments.
+        Args:
+            name (str): The name of the blueprint.
+            *args (List[Any]): Variable length argument list.
+            url_prefix (str, optional): The URL prefix for the blueprint. Defaults to None.
+            **kwargs (Dict[str, Any]): Keyword arguments.
 
-            Returns:
-                None
-            """
-            self.args: List[Any] = args
-            self.kwargs: Dict[str, Any] = kwargs
-            self.url_prefix: str = url_prefix
-            self.name: str = name
-            self.mound: List[Tuple[T_route, str, Any]] = []
+        Returns:
+            None
+        """
+        self.args: List[Any] = args
+        self.kwargs: Dict[str, Any] = kwargs
+        self.url_prefix: str = url_prefix
+        self.name: str = name
+        self.mound: List[Tuple[T_route, str, Any]] = []
 
     def route(self, rule: str, **options: Any) -> Callable[[T_route], T_route]:
         """
@@ -153,7 +153,7 @@ def register_outlining(bp: Blueprint, module: ModuleType) -> None:
         traceback.print_exc()
 
 
-def blueprint_register(
+def blueprint_registration(
     app: Flask, blueprint_dir: str = "app.module", url_prefix: str = None
 ) -> None:
     """

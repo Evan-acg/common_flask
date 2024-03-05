@@ -1,14 +1,14 @@
-from io import TextIOWrapper
 import logging
 import os
+import time
+from io import TextIOWrapper
 from logging.config import dictConfig
 from logging.handlers import BaseRotatingHandler
 from os import PathLike
 from os.path import dirname
-import time
 from typing import Dict
 
-from common_utils.utils.dict_util import merge
+from .dict_util import merge
 
 
 class SafeTimeRotatingFileHandler(BaseRotatingHandler):
@@ -88,7 +88,7 @@ _default_config = {
 }
 
 
-def logger_register(
+def logger_registration(
     config: Dict = {}, formatter: Dict = {}, handlers: Dict = {}, loggers: Dict = {}
 ) -> None:
     options: Dict = merge(

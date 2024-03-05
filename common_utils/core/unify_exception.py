@@ -41,9 +41,14 @@ class Forbidden(IException):
     message = t(f"message.{code}", default="Forbidden")
 
 
-class TokenInvalidOrExpired(IException):
+class TokenInvalid(IException):
     code = 40302
-    message = t(f"message.{code}", default="Token Invalid Or Expired")
+    message = t(f"message.{code}", default="Token Invalid")
+
+
+class TokenExpired(IException):
+    code = 40303
+    message = t(f"message.{code}", default="Token Expired")
 
 
 class NotFound(IException):

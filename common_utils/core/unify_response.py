@@ -2,7 +2,6 @@ from http import HTTPMethod
 from typing import Generic, List, Optional, TypeVar, Union
 
 from ..const.message import ELanguage
-
 from ..utils.i18n_util import t
 
 T = TypeVar("T")

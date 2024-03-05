@@ -84,8 +84,3 @@ def to_upper_snake_case(s: str) -> str:
     """
     _s = to_lower_snake_case(s)
     return _s.upper()
-
-
-if __name__ == "__main__":
-    result = to_upper_snake_case("helloWorld")
-    print(result)
