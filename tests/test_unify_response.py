@@ -1,4 +1,4 @@
-from common_utils.core.unify_response import R
+from common_utils import R
 
 
 def test_instance():

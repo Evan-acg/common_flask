@@ -1,8 +1,8 @@
-from logging import Logger, getLogger
 import pkgutil
 import re
 import traceback
 from importlib import import_module
+from logging import Logger, getLogger
 from types import ModuleType
 from typing import Any, Callable, Dict, List, Tuple
 

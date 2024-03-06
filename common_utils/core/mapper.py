@@ -203,7 +203,7 @@ class User(Entity):
             - The expiration time unit is in seconds.
             - The expiration time in the configuration key is "JWT_EXPIRATION".
         """
-        if expiration is None:
+        if expiration == 0:
             expiration = self.app.config.get("JWT_EXPIRATION", 60 * 60 * 24 * 7)
         return int(expiration + time.time())
 

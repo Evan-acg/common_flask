@@ -1,6 +1,4 @@
-from typing import List
-
-from common_utils.utils.tree_util import from_list
+from common_utils import from_list
 
 
 def test_from_list():
