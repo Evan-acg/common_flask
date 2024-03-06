@@ -1,16 +1,18 @@
-from abc import ABC, abstractmethod
-from typing import List
+"""
+This module provides utility functions for working with tree-like structures.
+
+The main function in this module is `from_list`,
+which converts a list of items into a tree-like structure based on the specified keys.
+"""
+
+from typing import Any, Dict, List, Protocol, cast
 
 
-class T(ABC):
-    @abstractmethod
+class T(Protocol):
+    """A protocol representing a type with keys."""
+
     def keys(self) -> List[str]:
-        pass
-
-
-from typing import List, TypeVar
-
-T = TypeVar("T")
+        """Return a list of keys."""
 
 
 def from_list(
@@ -31,16 +33,14 @@ def from_list(
     Returns:
         List[T]: The list of items organized in a tree-like structure.
     """
-    _items = [dict(item) for item in items]
-    _mapping = {}
+    _items = [dict(cast(Dict[str, Any], item)) for item in items]
+    _mapping: Dict[str | None, List[Any]] = {}
 
     for item in _items:
         _mapping.setdefault(item.get(parent_key), []).append(item)
 
     for item in _items:
         matched = _mapping.get(item.get(primary_key), [])
-        # if matched:
-        #     item.setdefault(children_key, matched)
         item.setdefault(children_key, matched)
 
     return _mapping.get("", []) + _mapping.get(None, [])

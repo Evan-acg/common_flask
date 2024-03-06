@@ -1,4 +1,7 @@
-from common_utils.utils.string_util import to_lower_camel_case, to_lower_snake_case, to_upper_camel_case, to_upper_snake_case
+from common_utils.utils.string_util import (to_lower_camel_case,
+                                            to_lower_snake_case,
+                                            to_upper_camel_case,
+                                            to_upper_snake_case)
 
 
 def test_to_lower_camel_case():

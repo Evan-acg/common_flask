@@ -1,8 +1,8 @@
 # This module contains the `Entity` class, which is the base class for all mapper objects in the application.
 import logging
 import time
-from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Literal, NotRequired, TypedDict
+from abc import abstractmethod
+from typing import Any, Dict, List, NotRequired, TypedDict
 
 import jwt
 from flask import Flask
@@ -36,7 +36,7 @@ IMergeFieldsSettings = TypedDict(
 )
 
 
-class Entity(db.Model):
+class Entity(db.Model):  # type: ignore
     __abstract__ = True
     cid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     createUserId = db.Column(
@@ -57,7 +57,7 @@ class Entity(db.Model):
     )
     status = db.Column(db.Integer, nullable=False, default=0)
 
-    def __getitem__(self, item) -> any:
+    def __getitem__(self, item) -> Any:
         """
         Retrieve the value of the specified attribute.
 
@@ -115,7 +115,7 @@ class Entity(db.Model):
         if len(self._only_fields) > 0:
             return self._only_fields
 
-        _items: List[str] = self.__table__.columns.keys()
+        _items: List[str] = self.__table__.columns.keys()  # type: ignore
         if self._use_low_camel_case:
             _items = [to_lower_camel_case(_) for _ in _items]
 
@@ -158,7 +158,7 @@ class User(Entity):
         salted = f"{password}{self.account}"
         return check_password_hash(self._secret, salted)
 
-    def token(self, mapper: List[str] = None) -> str:
+    def token(self, mapper: List[str] | None = None) -> str:
         """
         Generates a JSON Web Token (JWT) using the specified mapper.
 
@@ -187,12 +187,13 @@ class User(Entity):
         logger.debug(f"token: {full_token}")
         return full_token
 
-    def calc_expiration(self, expiration: int = None) -> int:
+    def calc_expiration(self, expiration: int = 0) -> int:
         """
         Calculate the expiration time as a Unix timestamp starting from the current time.
 
         Args:
-            expiration (int, optional): The expiration time in seconds. If not provided, it will be fetched from the configuration key "JWT_EXPIRATION". Defaults to None.
+            expiration (int, optional): The expiration time in seconds. If not provided,
+                it will be fetched from the configuration key "JWT_EXPIRATION". Defaults to None.
 
         Returns:
             int: The calculated expiration time as a Unix timestamp.
@@ -203,7 +204,7 @@ class User(Entity):
             - The expiration time in the configuration key is "JWT_EXPIRATION".
         """
         if expiration is None:
-            expiration: int = self.app.config.get("JWT_EXPIRATION", 60 * 60 * 24 * 7)
+            expiration = self.app.config.get("JWT_EXPIRATION", 60 * 60 * 24 * 7)
         return int(expiration + time.time())
 
     def merge_fields_settings(self) -> IMergeFieldsSettings:
@@ -211,16 +212,22 @@ class User(Entity):
 
     @staticmethod
     def parse_token(
-        token: str, secret_key: str = None, algorithm: str = None, prefix: str = None
+        token: str,
+        secret_key: str | None = None,
+        algorithm: str | None = None,
+        prefix: str | None = None,
     ) -> Dict[str, Any]:
         """
         Parse a JSON Web Token (JWT) and return the decoded payload.
 
         Args:
             token (str): The JWT to be parsed.
-            secret_key (str, optional): The secret key used to sign the JWT. If not provided, it will be retrieved from the app configuration.
-            algorithm (str, optional): The algorithm used to sign the JWT. If not provided, it will be retrieved from the app configuration.
-            prefix (str, optional): The prefix used to identify the JWT. If not provided, it will be retrieved from the app configuration.
+            secret_key (str, optional): The secret key used to sign the JWT. If not provided,
+                it will be retrieved from the app configuration.
+            algorithm (str, optional): The algorithm used to sign the JWT. If not provided,
+                it will be retrieved from the app configuration.
+            prefix (str, optional): The prefix used to identify the JWT. If not provided,
+                it will be retrieved from the app configuration.
 
         Returns:
             dict: The decoded payload of the JWT.

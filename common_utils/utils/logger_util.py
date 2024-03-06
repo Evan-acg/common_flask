@@ -6,7 +6,7 @@ from logging.config import dictConfig
 from logging.handlers import BaseRotatingHandler
 from os import PathLike
 from os.path import dirname
-from typing import Dict
+from typing import Dict, cast
 
 from .dict_util import merge
 
@@ -19,7 +19,7 @@ class SafeTimeRotatingFileHandler(BaseRotatingHandler):
         delay: bool = False,
     ) -> None:
         self.suffix: str = "%Y-%m-%d"
-        self.base_filename: str = filename
+        self.base_filename: str | PathLike[str] = filename
         self.current_file_name: str = self._compute_fn()
         if not os.path.exists(folder := dirname(filename)):
             os.makedirs(folder)
@@ -33,7 +33,7 @@ class SafeTimeRotatingFileHandler(BaseRotatingHandler):
     def doRollover(self) -> None:
         if self.stream:
             self.stream.close()
-            self.stream = None
+            self.stream = None  # type: ignore
         self.current_file_name = self._compute_fn()
 
     def _compute_fn(self) -> str:
@@ -55,7 +55,7 @@ class SafeTimeRotatingFileHandler(BaseRotatingHandler):
         except OSError:
             pass
 
-        return stream
+        return cast(TextIOWrapper, stream)
 
 
 _default_config = {

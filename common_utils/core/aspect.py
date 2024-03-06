@@ -1,17 +1,17 @@
 from functools import wraps
-from typing import List
+from typing import Any, Callable
 
 from flask import request
-from .mapper import User
 
+from .mapper import User
 from .unify_exception import Forbidden
 
 
-def token_required(validator: callable = None):
+def token_required(validator: Callable[..., Any] | None = None):
     def wrapper(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if validator:
+            if validator is not None:
                 if not validator(*args, **kwargs):
                     raise Forbidden()
                 else:
@@ -31,7 +31,7 @@ def token_required(validator: callable = None):
     return wrapper
 
 
-def role_required(validation: callable):
+def role_required(validation: Callable):
     def wrapper(f):
         @wraps(f)
         def decorated(*args, **kwargs):

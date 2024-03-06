@@ -1,3 +1,4 @@
+from logging import Logger, getLogger
 import pkgutil
 import re
 import traceback
@@ -7,6 +8,8 @@ from typing import Any, Callable, Dict, List, Tuple
 
 from flask import Blueprint, Flask
 from flask.sansio.scaffold import T_route
+
+logger: Logger = getLogger("blueprint utils")
 
 
 class Outlining:
@@ -21,8 +24,8 @@ class Outlining:
     def __init__(
         self,
         name: str,
-        *args: List[Any],
-        url_prefix: str = None,
+        *args: Any,
+        url_prefix: str | None = None,
         **kwargs: Dict[str, Any],
     ) -> None:
         """
@@ -37,9 +40,9 @@ class Outlining:
         Returns:
             None
         """
-        self.args: List[Any] = args
+        self.args: Tuple[Any] = args
         self.kwargs: Dict[str, Any] = kwargs
-        self.url_prefix: str = url_prefix
+        self.url_prefix: str | None = url_prefix
         self.name: str = name
         self.mound: List[Tuple[T_route, str, Any]] = []
 
@@ -70,7 +73,7 @@ class Outlining:
 
         return decorator
 
-    def register(self, bp, url_prefix: str = None) -> None:
+    def register(self, bp, url_prefix: str | None = None) -> None:
         """
         Register the blueprint's routes with the given Flask blueprint.
 
@@ -149,12 +152,13 @@ def register_outlining(bp: Blueprint, module: ModuleType) -> None:
             if not isinstance(v, Outlining):
                 continue
             v.register(bp)
-    except:
+    except Exception as e:
+        logger.exception(e)
         traceback.print_exc()
 
 
 def blueprint_registration(
-    app: Flask, blueprint_dir: str = "app.module", url_prefix: str = None
+    app: Flask, blueprint_dir: str = "app.module", url_prefix: str | None = None
 ) -> None:
     """
     Registers blueprints in the specified directory with the Flask app.

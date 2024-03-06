@@ -69,7 +69,7 @@ class Flask(_Flask):
     json_provider_class = JSONProvider
 
     def __init__(self, *args, **kwargs):
-        controller_scan_dir: str = kwargs.pop("controller_scan_dir", None)
+        controller_scan_dir: str = kwargs.pop("controller_scan_dir", None)  # type: ignore
         super().__init__(*args, **kwargs)
 
         flask_config_registration(self)
@@ -134,6 +134,6 @@ class Flask(_Flask):
 
         ret.path = request.path
         ret.method = request.method
-        _code: str = getattr(rv, "code", 20000)
+        _code: int = getattr(rv, "code", 20000)
         status: int = ceil(_code / 100)
         return super().make_response((dict(ret), status))

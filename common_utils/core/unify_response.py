@@ -19,8 +19,8 @@ class IResult(Generic[T]):
         """
         self.code: int = code
         self.message: str = message
-        self.data: Optional[T] = data
-        self.method: HTTPMethod = "GET"
+        self.data: T | None = data
+        self.method: HTTPMethod = HTTPMethod.GET
         self.path: str = "/"
 
     def __str__(self) -> str:
@@ -99,15 +99,16 @@ class R:
     @staticmethod
     def success(
         code: int = 20000,
-        message: str = None,
-        data: Optional[T] = None,
+        message: str | None = None,
+        data: T | None = None,
     ) -> IResult:
         """
         Create a success response.
 
         Args:
             code (int, optional): The response code. Defaults to 20000.
-            message (str, optional): The response message. If not provided, a default message will be used based on the code. Defaults to None.
+            message (str, optional): The response message. If not provided,
+            a default message will be used based on the code. Defaults to None.
             data (Optional[T], optional): The response data. Defaults to None.
 
         Returns:
@@ -121,15 +122,16 @@ class R:
     @staticmethod
     def fail(
         code: int = 40000,
-        message: str = None,
-        data: Optional[T] = None,
+        message: str | None = None,
+        data: T | None = None,
     ) -> IResult:
         """
         Create a failure response.
 
         Args:
             code (int, optional): The error code. Defaults to 40000.
-            message (str, optional): The error message. If not provided, a default message will be used based on the code. Defaults to None.
+            message (str, optional): The error message. If not provided,
+            a default message will be used based on the code. Defaults to None.
             data (Optional[T], optional): Additional data to include in the response. Defaults to None.
 
         Returns:
@@ -143,8 +145,8 @@ class R:
     @staticmethod
     def error(
         code: int = 50000,
-        message: str = None,
-        data: Optional[T] = None,
+        message: str | None = None,
+        data: T | None = None,
     ) -> IResult:
         """
         Create an error response.

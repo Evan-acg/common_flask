@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Dict, List
+from typing import Any, Dict
 
 
 def clone_deep(o):
@@ -15,10 +15,7 @@ def clone_deep(o):
     return deepcopy(o)
 
 
-from typing import Dict, List
-
-
-def merge(*dicts: List[Dict]) -> Dict:
+def merge(*dicts: Dict[str, Any]) -> Dict:
     """
     Merge multiple dictionaries into a single dictionary.
 
@@ -38,7 +35,7 @@ def merge(*dicts: List[Dict]) -> Dict:
     for d in dicts:
         if not isinstance(d, dict):
             raise ValueError("All input arguments must be dictionaries.")
-    ret = {}
+    ret: Dict[str, Any] = {}
     for d in dicts:
         for k, v in d.items():
             if isinstance(v, dict) and isinstance(ret.get(k), dict):

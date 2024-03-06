@@ -1,9 +1,10 @@
 from importlib.machinery import SourceFileLoader
-from setuptools import setup, find_packages
 
-version_module = SourceFileLoader(
-    "version", "common_utils/version.py"
-).load_module("version")
+from setuptools import find_packages, setup
+
+version_module = SourceFileLoader("version", "common_utils/version.py").load_module(
+    "version"
+)
 
 __version__ = version_module.__version__
 
@@ -20,7 +21,13 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=["Flask", "Flask-SQLAlchemy", "python-i18n", "pyjwt", "flask-cors"],
+    install_requires=[
+        "Flask",
+        "Flask-SQLAlchemy",
+        "python-i18n",
+        "pyjwt",
+        "flask-cors",
+    ],
     include_package_data=True,
     python_requires=">=3.10",
 )

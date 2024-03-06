@@ -1,14 +1,8 @@
-from common_utils.core.unify_exception import (
-    BadRequest,
-    DataNotFound,
-    Forbidden,
-    I18nNotFound,
-    InternalServerError,
-    MethodNotAllowed,
-    NotFound,
-    TokenExpired,
-    Unauthorized,
-)
+from common_utils.core.unify_exception import (BadRequest, DataNotFound,
+                                               Forbidden, I18nNotFound,
+                                               InternalServerError,
+                                               MethodNotAllowed, NotFound,
+                                               TokenExpired, Unauthorized)
 
 
 def test_bad_request():

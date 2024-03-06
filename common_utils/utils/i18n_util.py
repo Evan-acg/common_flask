@@ -1,6 +1,7 @@
-import i18n
+from os.path import abspath, dirname, join
+
+import i18n  # type: ignore
 from i18n import t
-from os.path import join, dirname, abspath
 
 i18n.set("file_format", "yaml")
 i18n.set("locale", "zh")
